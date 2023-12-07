@@ -17,7 +17,7 @@ class ItemBase(models.Model):
     abstract = True
   
   subject = models.CharField(null=False, unique=True, max_length=255)
-  image = models.ImageField(upload_to='courses/%Y/%m', default= None)
+  # image = models.ImageField(upload_to='courses/%Y/%m', default= None)
   active = models.BooleanField(default=True)
   created_date = models.DateTimeField(auto_now_add=True)
   updated_date = models.DateTimeField(auto_now=True)
@@ -43,6 +43,9 @@ class Lesson(ItemBase):
 
 class Tag(models.Model):
   name = models.CharField(null=False, unique=True, max_length=255)
-
+  active = models.BooleanField(default=True, null = True)
+  created_date = models.DateTimeField(auto_now_add=True, null = True)
+  updated_date = models.DateTimeField(auto_now=True, null = True)
+  
   def __str__(self):
     return self.name
