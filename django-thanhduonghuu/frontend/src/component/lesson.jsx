@@ -19,6 +19,8 @@ const Lesson = () => {
   const lesson = store((state) => state.lesson) || null;
   const updateLesson = store((state) => state.updateLesson);
 
+  const [dialog, setDialog] = useState(false);
+
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues: {
       subject: lesson ? lesson.subject : "",
@@ -39,8 +41,6 @@ const Lesson = () => {
     },
     enableReinitialize: true,
   });
-
-  const [dialog, setDialog] = useState(false);
 
   const handleDelete = async (id) => {
     try {
@@ -113,7 +113,7 @@ const Lesson = () => {
               >
                 Delete
               </Button>
-              <Button
+              {/* <Button
                 color="primary"
                 variant="contained"
                 onClick={() => {
@@ -122,7 +122,7 @@ const Lesson = () => {
                 }}
               >
                 View
-              </Button>
+              </Button> */}
             </Stack>
           );
         },
@@ -134,7 +134,7 @@ const Lesson = () => {
     (async () => {
       try {
         const data = await getListLesson();
-        updateListLesson(data.results);
+        updateListLesson(data);
       } catch (e) {
         console.log(e);
       }
@@ -143,7 +143,7 @@ const Lesson = () => {
 
   return (
     <Box>
-      <Stack flexDirection="row" justifyContent="end">
+      <Stack flexDirection="row" justifyContent="end" gap={2}>
         <Button
           variant="contained"
           onClick={() => setDialog(true)}
@@ -164,15 +164,11 @@ const Lesson = () => {
       <DataGrid
         rows={listLesson}
         columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
+        disableSelectionOnClick
+        disableRowSelectionOnClick
+        hideFooter
       />
-      <Dialog
+      {/* <Dialog
         open={!!dialog}
         onClose={() => setDialog(false)}
         onSubmit={handleSubmit}
@@ -184,7 +180,7 @@ const Lesson = () => {
           onChange={handleChange}
           name="subject"
         />
-      </Dialog>
+      </Dialog> */}
     </Box>
   );
 };

@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
+from .models import Course, Lesson, Tag
+from .serializers import CourseSerializer, LessonSerializer, TagSerializer
+from django.http import Http404
+from rest_framework import status
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Course, Lesson, Tag
-from .serializers import CourseSerializer, LessonSerializer, TagSerializer
-from rest_framework import status
-from django.http import Http404
 from rest_framework import generics
 from rest_framework.decorators import action
 
@@ -41,7 +41,7 @@ class CourseViewSet(viewsets.ModelViewSet):
   #api khac ngoai 5 method tren, chi viewset them dc action
   #/courses/{id}/hide-course
   @action(methods=['post'], detail = True, url_path = 'hide-course')
-  def hide_tag(self, request, pk):
+  def hide_course(self, request, pk):
     try:
       course = Course.objects.get(pk=pk)
       course.active = False
@@ -67,15 +67,15 @@ class LessonDetail(generics.RetrieveUpdateDestroyAPIView):
 class TagListCreateApiView(APIView):
   def get(self, request): 
     tags = Tag.objects.all().order_by('id')
-    serializer = TagSerializer(tags, many=True)
-    return Response(serializer.data)
+    tagSerializer = TagSerializer(tags, many=True)
+    return Response(tagSerializer.data)
   
   def post(self, request):
-    tag = TagSerializer(data=request.data)
-    if tag.is_valid():
-      tag.save()
-      return Response(tag.data, status=status.HTTP_201_CREATED)
-    return Response(tag.errors, status=status.HTTP_400_BAD_REQUEST)
+    tagSerializer = TagSerializer(data=request.data)
+    if tagSerializer.is_valid():
+      tagSerializer.save()
+      return Response(tagSerializer.data, status=status.HTTP_201_CREATED)
+    return Response(tagSerializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
 class TagDetailApiView(APIView):
   def get_tag(self, pk): 

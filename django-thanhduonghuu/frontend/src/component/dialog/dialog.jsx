@@ -1,7 +1,7 @@
 import { Box, Button, Dialog as MuiDialog, Stack, Zoom } from "@mui/material";
 import React from "react";
 
-const Dialog = ({ open, onClose, children, onSubmit }) => {
+const Dialog = ({ open, onClose, children, onSubmit, loading }) => {
   return (
     <MuiDialog
       open={open}
@@ -36,7 +36,12 @@ const Dialog = ({ open, onClose, children, onSubmit }) => {
           <Button color="inherit" variant="contained" onClick={onClose}>
             Cancel
           </Button>
-          <Button color="primary" type="submit" variant="contained">
+          <Button
+            disabled={loading}
+            color="primary"
+            type="submit"
+            variant="contained"
+          >
             Update
           </Button>
         </Stack>
